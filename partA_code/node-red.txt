@@ -1,0 +1,624 @@
+[
+    {
+        "id": "901a7ee6.318ff",
+        "type": "mqtt in",
+        "z": "c95e226c.f5de3",
+        "name": "new aws",
+        "topic": "/wago",
+        "qos": "0",
+        "broker": "892c5ea7.3a9d9",
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "ac596dfb.ceb73",
+                "7e188316.f5ed1c",
+                "2b5540d7.f6063"
+            ]
+        ]
+    },
+    {
+        "id": "ac596dfb.ceb73",
+        "type": "debug",
+        "z": "c95e226c.f5de3",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 290,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "7e188316.f5ed1c",
+        "type": "grove digital output",
+        "z": "c95e226c.f5de3",
+        "name": "light",
+        "board": "db1375f6.c83df8",
+        "pin": "7",
+        "x": 270,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "2b5540d7.f6063",
+        "type": "function",
+        "z": "c95e226c.f5de3",
+        "name": "prepareLedResult",
+        "func": "var date = new Date();\nvar time = date.getTime();\n\nmsg.payload = '{\"time\":' + time + ', \"LED Status\":' + msg.payload + '}';\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "ca2d0ded.f951c",
+                "d96125e1.ad99c8"
+            ]
+        ]
+    },
+    {
+        "id": "d96125e1.ad99c8",
+        "type": "debug",
+        "z": "c95e226c.f5de3",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 510,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ca2d0ded.f951c",
+        "type": "cloudant out",
+        "z": "c95e226c.f5de3",
+        "name": "connect2LedDb",
+        "cloudant": "ddbba07c.bd9e1",
+        "database": "led_db",
+        "service": "_ext_",
+        "payonly": true,
+        "operation": "insert",
+        "successOutput": false,
+        "x": 520,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "892c5ea7.3a9d9",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "new aws",
+        "broker": "a3rzwyuyskpvz8.iot.us-east-1.amazonaws.com",
+        "port": "8883",
+        "tls": "398e35f2.0e601a",
+        "clientid": "",
+        "usetls": true,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "db1375f6.c83df8",
+        "type": "board-config",
+        "z": "",
+        "board": "GrovePi"
+    },
+    {
+        "id": "ddbba07c.bd9e1",
+        "type": "cloudant",
+        "z": "",
+        "host": "2e4431fd-334a-4c4d-a5c9-2ef3fd8cf389-bluemix.cloudant.com",
+        "name": "myDB"
+    },
+    {
+        "id": "398e35f2.0e601a",
+        "type": "tls-config",
+        "z": "",
+        "name": "new aws",
+        "cert": "/home/pi/finalProject/certs/certificate.pem.crt",
+        "key": "/home/pi/finalProject/certs/private.pem.key",
+        "ca": "/home/pi/finalProject/certs/root-CA.crt",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "verifyservercert": true
+    }
+]
+
+[
+    {
+        "id": "5a408ada.30c334",
+        "type": "grove digital sensor",
+        "z": "e24c01f0.ddc4",
+        "name": "getTemp",
+        "board": "db1375f6.c83df8",
+        "sensor": "dht11",
+        "repeat": "60",
+        "pin": "3",
+        "x": 100,
+        "y": 140,
+        "wires": [
+            [
+                "6349dd7f.7f0e94",
+                "5ff1756.18b578c",
+                "3162537f.eba69c"
+            ]
+        ]
+    },
+    {
+        "id": "6349dd7f.7f0e94",
+        "type": "function",
+        "z": "e24c01f0.ddc4",
+        "name": "prepareThResult",
+        "func": "var currentdate = new Date();\nvar timestamp = currentdate.getTime();\n\nmsg.payload = '{\"timestamp\":' + timestamp + ', \"temperature\":'+ msg.payload.temperature + ', \"humidity\": ' + msg.payload.humidity + '}';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "bca18b76.ce0fe8",
+                "bdff6c3b.f4d24"
+            ]
+        ]
+    },
+    {
+        "id": "bca18b76.ce0fe8",
+        "type": "cloudant out",
+        "z": "e24c01f0.ddc4",
+        "name": "connect2TemDb",
+        "cloudant": "ddbba07c.bd9e1",
+        "database": "temp_humid_db",
+        "service": "_ext_",
+        "payonly": true,
+        "operation": "insert",
+        "successOutput": false,
+        "x": 540,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "bdff6c3b.f4d24",
+        "type": "debug",
+        "z": "e24c01f0.ddc4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 530,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "6d373964.0be1d8",
+        "type": "cloudant in",
+        "z": "e24c01f0.ddc4",
+        "name": "temp_humid_db",
+        "cloudant": "9b270ccd.1139d",
+        "database": "temp_humid_db",
+        "service": "_ext_",
+        "search": "_all_",
+        "design": "",
+        "index": "",
+        "x": 280,
+        "y": 420,
+        "wires": [
+            [
+                "e1e39613.2f0608"
+            ]
+        ]
+    },
+    {
+        "id": "cf603dfa.2fcf7",
+        "type": "inject",
+        "z": "e24c01f0.ddc4",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 100,
+        "y": 400,
+        "wires": [
+            [
+                "6d373964.0be1d8"
+            ]
+        ]
+    },
+    {
+        "id": "dc6936b7.3174d8",
+        "type": "debug",
+        "z": "e24c01f0.ddc4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 790,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "8809af37.75f41",
+        "type": "mqtt in",
+        "z": "e24c01f0.ddc4",
+        "name": "tempThing",
+        "topic": "/temperature",
+        "qos": "0",
+        "broker": "6f0a37cc.438ee8",
+        "x": 100,
+        "y": 440,
+        "wires": [
+            [
+                "6d373964.0be1d8"
+            ]
+        ]
+    },
+    {
+        "id": "6d6b7168.42bbf",
+        "type": "mqtt out",
+        "z": "e24c01f0.ddc4",
+        "name": "sendToShadow",
+        "topic": "$aws/things/temperature/shadow/update/accepted",
+        "qos": "",
+        "retain": "",
+        "broker": "6f0a37cc.438ee8",
+        "x": 800,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "459fc95e.4e0418",
+        "type": "json",
+        "z": "e24c01f0.ddc4",
+        "name": "json",
+        "property": "payload",
+        "action": "str",
+        "pretty": true,
+        "x": 630,
+        "y": 420,
+        "wires": [
+            [
+                "dc6936b7.3174d8",
+                "6d6b7168.42bbf"
+            ]
+        ]
+    },
+    {
+        "id": "e1e39613.2f0608",
+        "type": "function",
+        "z": "e24c01f0.ddc4",
+        "name": "readTempData",
+        "func": "\n// msg.payload = msg.payload[msg.payload.length - 1];\n\nvar t = msg.payload[msg.payload.length - 1].temperature;\nvar h = msg.payload[msg.payload.length - 1].humidity;\n\nvar temperature = {state:{reported:{ temp: t, humid: h}}};\nmsg.payload = temperature;\n// jsonObj.data.push(temperature);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 420,
+        "wires": [
+            [
+                "459fc95e.4e0418"
+            ]
+        ]
+    },
+    {
+        "id": "eeb0a46b.f1a1c8",
+        "type": "comment",
+        "z": "e24c01f0.ddc4",
+        "name": "Temp&Humd Database",
+        "info": "Retrive temperature and humidity data from grove pi every minute and sent to IBM cloudant database",
+        "x": 120,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "5888e0ee.d80b2",
+        "type": "comment",
+        "z": "e24c01f0.ddc4",
+        "name": "AWS MQTT Request ",
+        "info": "1. Receive mqtt request from AWS IOT (initiated by lambda);\n2. Retrive data from IBM database and selete the lattest data;\n3. Prepare data JSON file based on AWS IOT Shadow format requiremnt,\nand update JSON to AWS IOT Shadow;\n4. AWS Lambda could retrive data directly from IOT shadow;\n\n",
+        "x": 110,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "bcd84233.06632",
+        "type": "wiotp out",
+        "z": "e24c01f0.ddc4",
+        "authType": "d",
+        "qs": "false",
+        "qsDeviceId": "",
+        "deviceKey": "41c2e2e.2e90a1c",
+        "deviceType": "",
+        "deviceId": "",
+        "event": "event",
+        "format": "json",
+        "qos": "0",
+        "name": "tempShow",
+        "x": 510,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "e9ac8a0f.7c89f8",
+        "type": "function",
+        "z": "e24c01f0.ddc4",
+        "name": "sendEvent",
+        "func": "var currentdate = new Date();\nvar timestamp = currentdate.getTime();\n\nmsg.payload = '{\"d\":{\"temperature\":'+ msg.payload.temperature + ', \"humidity\": ' + msg.payload.humidity + '}';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 620,
+        "wires": [
+            [
+                "bcd84233.06632"
+            ]
+        ]
+    },
+    {
+        "id": "e7b2cc46.1c369",
+        "type": "debug",
+        "z": "e24c01f0.ddc4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 530,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "1b63c2bd.c45cbd",
+        "type": "ui_chart",
+        "z": "e24c01f0.ddc4",
+        "name": "tempShow",
+        "group": "adf4374a.0a6978",
+        "order": 0,
+        "width": "0",
+        "height": "0",
+        "label": "Temperature History",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "Temperature history",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 530,
+        "y": 180,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5ff1756.18b578c",
+        "type": "function",
+        "z": "e24c01f0.ddc4",
+        "name": "temp",
+        "func": "msg.payload = msg.payload.temperature;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 180,
+        "wires": [
+            [
+                "1b63c2bd.c45cbd",
+                "e7b2cc46.1c369"
+            ]
+        ]
+    },
+    {
+        "id": "3162537f.eba69c",
+        "type": "function",
+        "z": "e24c01f0.ddc4",
+        "name": "humid",
+        "func": "msg.payload = msg.payload.humidity;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 280,
+        "wires": [
+            [
+                "b0513e91.b3d1c",
+                "a7f29325.85d3"
+            ]
+        ]
+    },
+    {
+        "id": "b0513e91.b3d1c",
+        "type": "ui_chart",
+        "z": "e24c01f0.ddc4",
+        "name": "humidShow",
+        "group": "adf4374a.0a6978",
+        "order": 0,
+        "width": "0",
+        "height": "0",
+        "label": "Humidity History",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "Humidity history",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 530,
+        "y": 260,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "a7f29325.85d3",
+        "type": "debug",
+        "z": "e24c01f0.ddc4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 530,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "db1375f6.c83df8",
+        "type": "board-config",
+        "z": "",
+        "board": "GrovePi"
+    },
+    {
+        "id": "ddbba07c.bd9e1",
+        "type": "cloudant",
+        "z": "",
+        "host": "2e4431fd-334a-4c4d-a5c9-2ef3fd8cf389-bluemix.cloudant.com",
+        "name": "myDB"
+    },
+    {
+        "id": "9b270ccd.1139d",
+        "type": "cloudant",
+        "z": "",
+        "host": "2e4431fd-334a-4c4d-a5c9-2ef3fd8cf389-bluemix.cloudant.com",
+        "name": "test"
+    },
+    {
+        "id": "6f0a37cc.438ee8",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "tempThing",
+        "broker": "a3rzwyuyskpvz8.iot.us-east-1.amazonaws.com",
+        "port": "8883",
+        "tls": "aef7a69.a007958",
+        "clientid": "temperature",
+        "usetls": true,
+        "verifyservercert": true,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "41c2e2e.2e90a1c",
+        "type": "wiotp-credentials",
+        "z": "",
+        "name": "watson_iot_platform",
+        "org": "d:dmwdbw:sensor:tempSensor",
+        "serverName": "dmwdbw.internetofthings.ibmcloud.com",
+        "devType": "Sensor",
+        "devId": "tempSensor",
+        "keepalive": "60",
+        "cleansession": true,
+        "tls": "398e35f2.0e601a",
+        "usetls": false
+    },
+    {
+        "id": "adf4374a.0a6978",
+        "type": "ui_group",
+        "z": "",
+        "name": "temp_humid",
+        "tab": "545e53f0.866fdc",
+        "disp": true,
+        "width": "6",
+        "collapse": true
+    },
+    {
+        "id": "aef7a69.a007958",
+        "type": "tls-config",
+        "z": "",
+        "name": "tempThing",
+        "cert": "/home/pi/finalProject/iot-temperature-cert/bb820dd17c-certificate.pem.crt",
+        "key": "/home/pi/finalProject/iot-temperature-cert/bb820dd17c-private.pem.key",
+        "ca": "/home/pi/finalProject/iot-temperature-cert/rootCA.pem",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "verifyservercert": true
+    },
+    {
+        "id": "398e35f2.0e601a",
+        "type": "tls-config",
+        "z": "",
+        "name": "new aws",
+        "cert": "/home/pi/finalProject/certs/certificate.pem.crt",
+        "key": "/home/pi/finalProject/certs/private.pem.key",
+        "ca": "/home/pi/finalProject/certs/root-CA.crt",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "verifyservercert": true
+    },
+    {
+        "id": "545e53f0.866fdc",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard"
+    }
+]

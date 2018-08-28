@@ -1,0 +1,45 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "raspberry",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "LightControlOnIntent",
+                    "slots": [],
+                    "samples": [
+                        "turn l e d on",
+                        "turn led on",
+                        "led turn on",
+                        "led to turn on"
+                    ]
+                },
+                {
+                    "name": "LightControlOffIntent",
+                    "slots": [],
+                    "samples": [
+                        "turn led off",
+                        "led turn off",
+                        "led to turn off"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}

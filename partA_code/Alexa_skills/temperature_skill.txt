@@ -1,0 +1,55 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "sensor",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "GetTemperature",
+                    "slots": [],
+                    "samples": [
+                        "what's the current room temperature",
+                        "what is the current room temperature",
+                        "room temperature",
+                        "ask room sensor to check temperature",
+                        "ask room sensor what is the temperature"
+                    ]
+                },
+                {
+                    "name": "GetHumidity",
+                    "slots": [],
+                    "samples": [
+                        "what is the room humidity",
+                        "ask room sensor about room humidity",
+                        "room humidity"
+                    ]
+                },
+                {
+                    "name": "GetCondition",
+                    "slots": [],
+                    "samples": [
+                        "what is current room condition",
+                        "ask room sensor about room condition",
+                        "room condition"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}
